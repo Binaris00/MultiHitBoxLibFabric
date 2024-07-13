@@ -16,7 +16,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"binaris.multihitboxlib.MultiHitBoxLib"
+          "binaris.multihitboxlib.MHLibMod"
+		],
+		"client": [
+		  "binaris.multihitboxlib.MHLibModClient"
 		]
 	},
 	"mixins": [

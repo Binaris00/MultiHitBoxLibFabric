@@ -11,21 +11,73 @@ base {
 }
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
+	maven { url "https://maven.terraformersmc.com/releases" }
+
+	maven {
+		name = "CurseMaven Maven"
+		url = "https://www.cursemaven.com"
+	}
+
+	maven {
+		name = "AzureDoom Maven"
+		url = "https://libs.azuredoom.com:4443/mods"
+	}
+
+	maven {
+		name = "Geckolib Maven"
+		url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven"
+	}
+
+	maven {
+		name = "CubicInterpolation Maven"
+		url = "https://cubicinterpolation.net/maven/"
+	}
+
+	maven {
+		name = "BlameJared maven"
+		url = "https://maven.blamejared.com/"
+	}
+
+	maven {
+		name = "RyanLiptak Maven"
+		url = "https://maven.ryanliptak.com/"
+	}
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings loom.officialMojangMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
+	// Geckolib
+	modImplementation("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}")
+	implementation("com.eliotlash.mclib:mclib:20")
+
+	// AzureLib
+	modImplementation "mod.azure.azurelib:azurelib-fabric-${minecraft_version}:${azurelib_version}"
+	modApi "com.terraformersmc:modmenu:7.2.2"
+
+	// Just Enough Effects
+	implementation ("curse.maven:just-enough-effect-descriptions-jeed-532286:${jeed_version}")
+
+	// Just Enough Items
+	compileOnly ("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+	compileOnly ("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+
+	runtimeOnly ("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+
+	// ModMenu
+	implementation("curse.maven:modmenu-308702:${modmenu_version}")
+
+	// Fabric API
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	// Jade
+	implementation ("curse.maven:jade-324717:${jade_version}")
+
+	// AppleSkin
+	compileOnly ("squeek.appleskin:appleskin-fabric:${appleskin_version}:api")
+	runtimeOnly ("squeek.appleskin:appleskin-fabric:${appleskin_version}")
 	
 }
 
