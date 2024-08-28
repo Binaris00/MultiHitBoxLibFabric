@@ -19,7 +19,7 @@
           "binaris.multihitboxlib.MHLibMod"
 		],
 		"client": [
-		  "binaris.multihitboxlib.MHLibModClient"
+          "binaris.multihitboxlib.client.MHLibModClient"
 		]
 	},
 	"mixins": [
