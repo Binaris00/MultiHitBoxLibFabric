@@ -1,6 +1,6 @@
 package binaris.multihitboxlib.api.network;
 
-import binaris.multihitboxlib.networking.NetworkingHandler;
+import binaris.multihitboxlib.init.MHLibPackets;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
@@ -30,7 +30,7 @@ public abstract class PacketS2C {
     public PacketS2C(ServerPlayer player, FriendlyByteBuf buf) {
         this.player = player;
         this.buf = buf;
-        NetworkingHandler.registerServerToClientPacket(this);
+        MHLibPackets.registerServerToClientPacket(this);
     }
 
     /** Abstract method to handle the buffer on the server side. **/

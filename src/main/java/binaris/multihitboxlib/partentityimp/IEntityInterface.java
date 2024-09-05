@@ -1,4 +1,4 @@
-package binaris.multihitboxlib.mixin.partentity.content;
+package binaris.multihitboxlib.partentityimp;
 
 import org.jetbrains.annotations.Nullable;
 

@@ -1,4 +1,4 @@
-package binaris.multihitboxlib.mixin.partentity.content;
+package binaris.multihitboxlib.partentityimp;
 
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;

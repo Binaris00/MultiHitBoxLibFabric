@@ -1,5 +1,7 @@
 package binaris.multihitboxlib.client.geckolib;
 
+import binaris.multihitboxlib.client.EntityRenderEventHandlerCommonLogic;
+import binaris.multihitboxlib.client.IBoneInformationCollectorLayerCommonLogic;
 import net.minecraft.world.entity.Entity;
 import software.bernie.geckolib.event.GeoRenderEvent;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;

@@ -1,4 +1,4 @@
-package binaris.multihitboxlib.networking;
+package binaris.multihitboxlib.init;
 
 import binaris.multihitboxlib.api.network.PacketC2S;
 import binaris.multihitboxlib.api.network.PacketS2C;
@@ -23,7 +23,7 @@ import java.util.List;
  * To use this system, you will need to create a new class that extends {@link PacketC2S} or {@link PacketS2C}
  * and implement the required methods. If you want to know more about this system please the docs for these classes.
  */
-public final class NetworkingHandler {
+public final class MHLibPackets {
     private static final List<PacketC2S> C2S_PACKETS = new ArrayList<>();
     private static final List<PacketS2C> S2C_PACKETS = new ArrayList<>();
 

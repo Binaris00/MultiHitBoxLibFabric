@@ -1,9 +1,9 @@
 package binaris.multihitboxlib.client.geckolib.renderlayer;
 
+import binaris.multihitboxlib.client.IBoneInformationCollectorLayerCommonLogic;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import de.dertoaster.multihitboxlib.client.IBoneInformationCollectorLayerCommonLogic;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.Entity;
@@ -14,7 +14,7 @@ import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.GeoReplacedEntityRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
-public class GeckolibBoneInformationCollectorLayer<T extends GeoAnimatable> extends GeoRenderLayer<T> implements IBoneInformationCollectorLayerCommonLogic<GeoBone>{
+public class GeckolibBoneInformationCollectorLayer<T extends GeoAnimatable> extends GeoRenderLayer<T> implements IBoneInformationCollectorLayerCommonLogic<GeoBone> {
 
     public GeckolibBoneInformationCollectorLayer(GeoRenderer<T> entityRendererIn) {
         super(entityRendererIn);

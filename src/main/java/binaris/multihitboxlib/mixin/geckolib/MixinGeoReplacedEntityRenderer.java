@@ -1,5 +1,6 @@
 package binaris.multihitboxlib.mixin.geckolib;
 
+import binaris.multihitboxlib.client.geckolib.renderlayer.GeckolibBoneInformationCollectorLayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

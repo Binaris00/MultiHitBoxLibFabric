@@ -1,5 +1,6 @@
 package binaris.multihitboxlib.mixin.azurelib;
 
+import binaris.multihitboxlib.client.azurelib.renderlayer.AzurelibBoneInformationCollectorLayer;
 import mod.azure.azurelib.renderer.GeoEntityRenderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

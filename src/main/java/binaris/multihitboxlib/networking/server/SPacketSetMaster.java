@@ -15,7 +15,6 @@ import net.minecraft.world.entity.Entity;
 
 import java.util.UUID;
 
-// TODO: Class Ready, Test Required
 public class SPacketSetMaster extends PacketS2C {
     public static final ResourceLocation CHANNEL_NAME = new ResourceLocation(MHLibMod.MODID, "set_master");
     private final int entityID;

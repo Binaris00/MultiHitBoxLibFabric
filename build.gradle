@@ -57,27 +57,29 @@ dependencies {
 	modImplementation "mod.azure.azurelib:azurelib-fabric-${minecraft_version}:${azurelib_version}"
 	modApi "com.terraformersmc:modmenu:7.2.2"
 
+	// Problem
 	// Just Enough Effects
-	implementation ("curse.maven:just-enough-effect-descriptions-jeed-532286:${jeed_version}")
+	//implementation ("curse.maven:just-enough-effect-descriptions-jeed-532286:${jeed_version}")
 
 	// Just Enough Items
-	compileOnly ("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
-	compileOnly ("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+	//compileOnly ("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+	//compileOnly ("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
 
-	runtimeOnly ("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+	//runtimeOnly ("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 
 	// ModMenu
-	implementation("curse.maven:modmenu-308702:${modmenu_version}")
+	//implementation("curse.maven:modmenu-308702:${modmenu_version}")
 
 	// Fabric API
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// Jade
-	implementation ("curse.maven:jade-324717:${jade_version}")
+	//implementation ("curse.maven:jade-324717:${jade_version}")
 
 	// AppleSkin
-	compileOnly ("squeek.appleskin:appleskin-fabric:${appleskin_version}:api")
-	runtimeOnly ("squeek.appleskin:appleskin-fabric:${appleskin_version}")
+	// Problem
+	//compileOnly ("squeek.appleskin:appleskin-fabric:${appleskin_version}:api")
+	//runtimeOnly ("squeek.appleskin:appleskin-fabric:${appleskin_version}")
 	
 }
 

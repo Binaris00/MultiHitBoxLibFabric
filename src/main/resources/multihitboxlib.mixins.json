@@ -5,6 +5,7 @@
   "plugin": "binaris.multihitboxlib.mixin.MHLibPlugin",
   "refmap": "multihitboxlib.refmap.json",
   "mixins": [
+    "accesor.AccessorEntity",
     "entity.MixinLivingEntity",
     "entity.MixinServerEntity",
     "geckolib.MixinGeoEntityRenderer",
@@ -13,6 +14,8 @@
   ],
   "client": [
     "accesor.AccessorEntityRenderer",
+    "azurelib.MixinGeoEntityRenderer",
+    "azurelib.MixinGeoReplacedEntityRenderer",
     "minecraft.MixinMinecraft"
   ],
   "minVersion": "0.8"

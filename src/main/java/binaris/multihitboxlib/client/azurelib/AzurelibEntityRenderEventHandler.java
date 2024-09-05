@@ -1,6 +1,7 @@
 package binaris.multihitboxlib.client.azurelib;
 
 import binaris.multihitboxlib.client.EntityRenderEventHandlerCommonLogic;
+import binaris.multihitboxlib.client.IBoneInformationCollectorLayerCommonLogic;
 import mod.azure.azurelib.event.GeoRenderEvent;
 import mod.azure.azurelib.renderer.GeoEntityRenderer;
 import mod.azure.azurelib.renderer.layer.GeoRenderLayer;

@@ -1,5 +1,6 @@
 package binaris.multihitboxlib.mixin.minecraft;
 
+import binaris.multihitboxlib.assetsynch.pack.AssetSynchPackFinder;
 import org.apache.commons.lang3.ArrayUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

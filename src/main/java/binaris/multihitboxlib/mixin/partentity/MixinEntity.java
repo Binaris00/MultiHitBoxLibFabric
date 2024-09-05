@@ -1,7 +1,7 @@
 package binaris.multihitboxlib.mixin.partentity;
 
-import binaris.multihitboxlib.mixin.partentity.content.IEntityInterface;
-import binaris.multihitboxlib.mixin.partentity.content.PartEntity;
+import binaris.multihitboxlib.partentityimp.IEntityInterface;
+import binaris.multihitboxlib.partentityimp.PartEntity;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;

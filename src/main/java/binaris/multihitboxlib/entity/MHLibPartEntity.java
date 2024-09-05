@@ -1,7 +1,8 @@
 package binaris.multihitboxlib.entity;
 
+import binaris.multihitboxlib.api.IMultipartEntity;
 import binaris.multihitboxlib.entity.hitbox.SubPartConfig;
-import binaris.multihitboxlib.mixin.partentity.content.PartEntity;
+import binaris.multihitboxlib.partentityimp.PartEntity;
 import binaris.multihitboxlib.networking.server.SPacketUpdateMultipart;
 import binaris.multihitboxlib.util.LazyLoadField;
 import net.minecraft.nbt.CompoundTag;

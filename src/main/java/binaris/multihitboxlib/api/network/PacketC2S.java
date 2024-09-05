@@ -1,6 +1,6 @@
 package binaris.multihitboxlib.api.network;
 
-import binaris.multihitboxlib.networking.NetworkingHandler;
+import binaris.multihitboxlib.init.MHLibPackets;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -29,7 +29,7 @@ public abstract class PacketC2S {
      * **/
     public PacketC2S(FriendlyByteBuf buf) {
         this.buf = buf;
-        NetworkingHandler.registerClientToServerPacket(this);
+        MHLibPackets.registerClientToServerPacket(this);
     }
 
     /** Abstract method to handle the buffer on the client side. **/

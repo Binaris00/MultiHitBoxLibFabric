@@ -1,6 +1,7 @@
 package binaris.multihitboxlib.client.azurelib.renderlayer;
 
 
+import binaris.multihitboxlib.client.IBoneInformationCollectorLayerCommonLogic;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -14,7 +15,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
-public class AzurelibBoneInformationCollectorLayer<T extends GeoAnimatable> extends GeoRenderLayer<T> implements IBoneInformationCollectorLayerCommonLogic<GeoBone>{
+public class AzurelibBoneInformationCollectorLayer<T extends GeoAnimatable> extends GeoRenderLayer<T> implements IBoneInformationCollectorLayerCommonLogic<GeoBone> {
 
     public AzurelibBoneInformationCollectorLayer(GeoRenderer<T> entityRendererIn) {
         super(entityRendererIn);

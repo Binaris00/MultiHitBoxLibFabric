@@ -8,9 +8,16 @@ import java.util.UUID;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.function.BiConsumer;
 
-import javax.annotation.Nullable;
-
+import binaris.multihitboxlib.api.IModifiableMultipartEntity;
 import binaris.multihitboxlib.api.IMultipartEntity;
+import binaris.multihitboxlib.entity.MHLibPartEntity;
+import binaris.multihitboxlib.mixin.accesor.AccessorEntity;
+import binaris.multihitboxlib.partentityimp.IEntityInterface;
+import binaris.multihitboxlib.partentityimp.PartEntity;
+import binaris.multihitboxlib.networking.client.CPacketBoneInformation;
+import binaris.multihitboxlib.util.BoneInformation;
+import binaris.multihitboxlib.util.ClientOnlyMethods;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,7 +34,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 @Mixin(LivingEntity.class)
-public abstract class MixinLivingEntity extends Entity implements IMultipartEntity<LivingEntity> {
+public abstract class MixinLivingEntity extends Entity implements IMultipartEntity<LivingEntity>, IEntityInterface {
+
+    @Unique
+    public LivingEntity self = (LivingEntity)(Object)this;
+
     @Unique
     protected Map<String, MHLibPartEntity<LivingEntity>> partMap = new HashMap<>();
     @Unique
@@ -92,8 +103,8 @@ public abstract class MixinLivingEntity extends Entity implements IMultipartEnti
             this.createSubPartsFromProfile(this.getHitboxProfile().get(), (LivingEntity)((Object)this), storageFunction);
         }
 
-        if (this.isMultipartEntity() && this.getParts() != null) {
-            this.setId(Entity.ENTITY_COUNTER.getAndAdd(this.getParts().length + 1) + 1);
+        if (this.multipart$isMultipartEntity() && this.multipart$getParts() != null) {
+            this.setId(((AccessorEntity) self).getEntityCounter().getAndAdd(this.multipart$getParts().length + 1) + 1);
         }
     }
 
@@ -151,7 +162,7 @@ public abstract class MixinLivingEntity extends Entity implements IMultipartEnti
             at = @At("TAIL")
     )
     private void mixinAiStep(CallbackInfo ci) {
-        if (!this.isMultipartEntity()) {
+        if (!this.multipart$isMultipartEntity()) {
             return;
         }
 
@@ -221,7 +232,7 @@ public abstract class MixinLivingEntity extends Entity implements IMultipartEnti
             at = @At("TAIL")
     )
     private void mixinTick(CallbackInfo ci) {
-        if(!this.isMultipartEntity()) {
+        if(!this.multipart$isMultipartEntity()) {
             return;
         }
 
@@ -246,8 +257,11 @@ public abstract class MixinLivingEntity extends Entity implements IMultipartEnti
 		else {
 			System.out.println("Master set to: " + id != null ? id.toString() : "NONE");
 		}*/
-        SPacketSetMaster masterPacket = new SPacketSetMaster(this);
-        MHLibPackets.send(masterPacket, PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this));
+
+
+        // TODO: Send packet to client, so they know who the master is
+//        SPacketSetMaster masterPacket = new SPacketSetMaster(this);
+//        MHLibPackets.send(masterPacket, PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this));
     }
 
     @Override
@@ -356,23 +370,23 @@ public abstract class MixinLivingEntity extends Entity implements IMultipartEnti
         if (this instanceof IModifiableMultipartEntity<?>) {
             return;
         }
-        if (this.isMultipartEntity() && this.getParts() != null) {
-            for (int i = 0; i < this.getParts().length; i++) {
-                this.getParts()[i].setId(pId + i + 1);
+        if (this.multipart$isMultipartEntity() && this.multipart$getParts() != null) {
+            for (int i = 0; i < this.multipart$getParts().length; i++) {
+                this.multipart$getParts()[i].setId(pId + i + 1);
             }
         }
     }
 
     @Override
-    public boolean isMultipartEntity() {
-        return super.isMultipartEntity() || !this.partMap.values().isEmpty();
+    public boolean multipart$isMultipartEntity() {
+        return !this.partMap.values().isEmpty();
     }
 
     @Override
-    @Nullable
-    public PartEntity<?>[] getParts() {
+    public @Nullable PartEntity<?>[] multipart$getParts() {
         if (this instanceof IModifiableMultipartEntity<?>) {
-            return super.getParts();
+            // Empty Array
+            return new PartEntity<?>[0];
         }
         return this.partArray;
     }
@@ -400,7 +414,7 @@ public abstract class MixinLivingEntity extends Entity implements IMultipartEnti
     }
 
     @Override
-    public Optional<Builder> getBoneInfoBuilder() {
+    public Optional<CPacketBoneInformation.Builder> getBoneInfoBuilder() {
         return this.boneInformationBuilder;
     }
 
@@ -410,7 +424,7 @@ public abstract class MixinLivingEntity extends Entity implements IMultipartEnti
     }
 
     @Override
-    public void setBoneInfoBuilderContent(Builder builder) {
+    public void setBoneInfoBuilderContent(CPacketBoneInformation.Builder builder) {
         this.boneInformationBuilder = Optional.ofNullable(builder);
     }
 }

@@ -1,6 +1,18 @@
 package binaris.multihitboxlib.assetsynch;
 
+import binaris.multihitboxlib.MHLibMod;
+import binaris.multihitboxlib.api.event.server.AssetEnforcementManagerRegistrationEvent;
+import binaris.multihitboxlib.api.event.server.SynchAssetFinderRegistrationEvent;
+import binaris.multihitboxlib.assetsynch.assetfinders.AbstractAssetFinder;
+import binaris.multihitboxlib.assetsynch.data.SynchDataContainer;
+import binaris.multihitboxlib.assetsynch.data.SynchDataManagerData;
+import binaris.multihitboxlib.assetsynch.data.SynchEntryData;
+import binaris.multihitboxlib.networking.server.assetsync.SPacketSynchAssets;
+import binaris.multihitboxlib.util.CompressionUtil;
+import binaris.multihitboxlib.util.LazyLoadFieldFunction;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,17 +39,20 @@ public class AssetEnforcement {
 		REGISTERED_MANAGERS.values().forEach(result::add);
 		return result;
 	}
-	
+
 	private static void initializeAssetFinders() {
 		final Map<ResourceLocation, AbstractAssetFinder> map = new Object2ObjectArrayMap<>();
-		SynchAssetFinderRegistrationEvent event = new SynchAssetFinderRegistrationEvent(map);
-		Bus.MOD.bus().get().post(event);
+
+		// Fire the event using Fabric's event system
+		SynchAssetFinderRegistrationEvent.EVENT.invoker().register(map);
+
 		if (map != null) {
 			map.entrySet().forEach(entry -> {
 				registerAssetFinder(entry.getKey(), entry.getValue());
 			});
 		}
 	}
+
 
 	protected static void registerAssetFinder(ResourceLocation key, AbstractAssetFinder value) {
 		if (key == null) {
@@ -53,9 +68,11 @@ public class AssetEnforcement {
 
 	private static void initializeManagers() {
 		final Map<ResourceLocation, AbstractAssetEnforcementManager> map = new Object2ObjectArrayMap<>();
-		AssetEnforcementManagerRegistrationEvent event = new AssetEnforcementManagerRegistrationEvent(map);
-		Bus.MOD.bus().get().post(event);
-		if (map != null) {
+
+		// Fire the event using Fabric's event system
+		boolean success = AssetEnforcementManagerRegistrationEvent.EVENT.invoker().register(map);
+
+		if (map != null && success) {
 			map.entrySet().forEach(entry -> {
 				try {
 					registerEnforcementManager(entry.getKey(), entry.getValue());
@@ -129,12 +146,12 @@ public class AssetEnforcement {
 	}
 	
 	private static void sendPacket(final ServerPlayer connection, final SynchDataContainer payload) {
-		SPacketSynchAssets packet = new SPacketSynchAssets(payload);
-		MHLibPackets.send(packet, PacketDistributor.PLAYER.with(() -> connection));
+		SPacketSynchAssets packet = new SPacketSynchAssets(connection, payload);
+		packet.send();
 	}
 	
 	public static boolean handleEntry(final SynchDataManagerData entry) {
-		if (FMLEnvironment.dist.isClient()) {
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
 			final AbstractAssetEnforcementManager manager = REGISTERED_MANAGERS.get(entry.manager());
 			if (manager == null) {
 				//TODO: Log

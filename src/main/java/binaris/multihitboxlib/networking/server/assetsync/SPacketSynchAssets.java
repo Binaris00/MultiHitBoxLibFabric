@@ -2,16 +2,26 @@ package binaris.multihitboxlib.networking.server.assetsync;
 
 import binaris.multihitboxlib.MHLibMod;
 import binaris.multihitboxlib.api.network.PacketS2C;
+import binaris.multihitboxlib.assetsynch.AssetEnforcement;
 import binaris.multihitboxlib.assetsynch.data.SynchDataContainer;
+import binaris.multihitboxlib.util.CompressionUtil;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.JsonOps;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+
+import java.io.IOException;
+import java.util.zip.DataFormatException;
+import java.util.zip.Deflater;
 
 public class SPacketSynchAssets extends PacketS2C {
     public static final ResourceLocation CHANNEL_NAME = new ResourceLocation(MHLibMod.MODID, "synch_assets");
@@ -31,32 +41,56 @@ public class SPacketSynchAssets extends PacketS2C {
         return SynchDataContainer.CODEC;
     }
 
-    protected SPacketSynchAssets createPacket(DataResult<SynchDataContainer> dr){
-        SynchDataContainer sdc = dr.getOrThrow(false, (s) -> {
-            //TODO
-        });
-        if (sdc != null) {
-            return new SPacketSynchAssets(sdc);
-        }
-        return null;
-    };
-    protected SPacketSynchAssets createPacket(SynchDataContainer data){
-        return new SPacketSynchAssets(data);
-    };
-
 
     @Override
     public void send() {
+        DataResult<JsonElement> dr = codec().encodeStart(JsonOps.COMPRESSED, data);
+        JsonElement je = dr.getOrThrow(false, (s) -> {
 
+        });
+        if (je != null) {
+            byte[] bytes = je.toString().getBytes();
+            try {
+                bytes = CompressionUtil.compress(bytes, Deflater.BEST_COMPRESSION, true);
+                getBuf().writeBoolean(true);
+                getBuf().writeByteArray(bytes);
+            } catch (IOException e) {
+                getBuf().writeBoolean(false);
+                e.printStackTrace();
+            }
+        } else {
+            getBuf().writeBoolean(false);
+        }
+        //buffer.writeJsonWithCodec(this.codec(), packet.getData());
+        ServerPlayNetworking.send(getPlayer(), CHANNEL_NAME, getBuf());
     }
 
     @Override
     public void receive(Minecraft client, ClientPacketListener handler, FriendlyByteBuf buf, PacketSender responseSender) {
+        if (buf.readBoolean()) {
+            byte[] bytes = buf.readByteArray();
+            if (bytes.length > 0) {
+                try {
+                    bytes = CompressionUtil.decompress(bytes, true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (DataFormatException e) {
+                    e.printStackTrace();
+                }
+                JsonElement je = JsonParser.parseString(new String(bytes));
+                DataResult<SynchDataContainer> dr = this.codec().parse(JsonOps.COMPRESSED, je);
+
+                AssetEnforcement.handlePacketData(dr.getOrThrow(false, (s) -> {
+                }));
+            }
+        }
+        //T data = buffer.readJsonWithCodec(this.codec());
+        //return this.createPacket(data);
 
     }
 
     @Override
     public ResourceLocation getChannelName() {
-        return null;
+        return CHANNEL_NAME;
     }
 }

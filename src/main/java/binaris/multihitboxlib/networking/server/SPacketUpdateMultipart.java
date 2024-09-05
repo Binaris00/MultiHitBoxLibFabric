@@ -5,7 +5,7 @@ import binaris.multihitboxlib.PartEntityManager;
 import binaris.multihitboxlib.api.IMultipartEntity;
 import binaris.multihitboxlib.api.network.PacketS2C;
 import binaris.multihitboxlib.entity.MHLibPartEntity;
-import binaris.multihitboxlib.mixin.partentity.content.PartEntity;
+import binaris.multihitboxlib.partentityimp.PartEntity;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -21,7 +21,6 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Class Ready, Test Required
 public class SPacketUpdateMultipart extends PacketS2C {
     public static final ResourceLocation CHANNEL_NAME = new ResourceLocation(MHLibMod.MODID, "update_multipart");
     public Entity entity;
